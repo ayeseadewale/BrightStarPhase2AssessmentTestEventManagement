@@ -1,0 +1,12 @@
+﻿@model Event
+
+<h2>@Model.Title</h2>
+<p>@Model.Description</p>
+<p>@Model.Date.ToShortDateString() @Model.Time</p>
+<p>@Model.Location</p>
+<p>Max Participants: @Model.MaxParticipants</p>
+
+<form asp-action="Register" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
