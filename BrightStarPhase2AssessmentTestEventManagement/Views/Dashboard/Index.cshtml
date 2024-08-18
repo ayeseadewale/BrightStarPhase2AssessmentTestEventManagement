@@ -2,6 +2,8 @@
 
 <h2>Upcoming Events</h2>
 
+<!-- Add Event Button -->
+<a asp-action="Create" asp-controller="Event" class="btn btn-success">Add Event</a>
 <table class="table">
     <thead>
         <tr>
@@ -19,8 +21,14 @@
                 <td>@eventItem.Date.ToShortDateString()</td>
                 <td>@eventItem.Location</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-info">View Details</a>
-                    <a asp-action="Register" asp-route-id="@eventItem.Id" class="btn btn-primary">Register Now</a>
+                    <!-- Details Button -->
+                    <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-info">Details</a>
+
+                    <!-- Edit Button -->
+                    <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-warning">Edit</a>
+
+                    <!-- Delete Button -->
+                    <a asp-action="Delete" asp-route-id="@eventItem.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
