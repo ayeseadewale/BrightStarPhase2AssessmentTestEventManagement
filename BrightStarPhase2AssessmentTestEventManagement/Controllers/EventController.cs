@@ -10,7 +10,6 @@ namespace BrightStarPhase2AssessmentTestEventManagement.Controllers
     public class EventController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         public EventController(ApplicationDbContext context)
         {
             _context = context;

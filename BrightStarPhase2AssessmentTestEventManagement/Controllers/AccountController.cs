@@ -18,32 +18,51 @@ namespace BrightStarPhase2AssessmentTestEventManagement.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                // Create a new user with the provided information
+                var newUser = new ApplicationUser
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    Name = model.Name,
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+
+                // Attempt to create the user
+                var creationResult = await _userManager.CreateAsync(newUser, model.Password);
+
+                if (creationResult.Succeeded)
+                {
+                    // Assign the selected role to the newly created user
+                    await _userManager.AddToRoleAsync(newUser, model.Role);
+
+                    // Sign in the user
+                    await _signInManager.SignInAsync(newUser, isPersistent: false);
+
+                    // Redirect to the home page
                     return RedirectToAction("Index", "Home");
                 }
-                foreach (var error in result.Errors)
+
+                // Add errors to the model state if the creation failed
+                foreach (var error in creationResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+            // If we reach this point, something failed, redisplay the form with the current model
             return View(model);
         }
+
+
 
         [HttpGet]
         public IActionResult Login()
