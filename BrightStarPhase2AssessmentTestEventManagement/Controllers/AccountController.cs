@@ -28,7 +28,6 @@ namespace BrightStarPhase2AssessmentTestEventManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Create a new user with the provided information
                 var newUser = new ApplicationUser
                 {
                     Name = model.Name,
@@ -36,29 +35,22 @@ namespace BrightStarPhase2AssessmentTestEventManagement.Controllers
                     Email = model.Email
                 };
 
-                // Attempt to create the user
                 var creationResult = await _userManager.CreateAsync(newUser, model.Password);
 
                 if (creationResult.Succeeded)
                 {
-                    // Assign the selected role to the newly created user
                     await _userManager.AddToRoleAsync(newUser, model.Role);
 
-                    // Sign in the user
                     await _signInManager.SignInAsync(newUser, isPersistent: false);
 
-                    // Redirect to the home page
                     return RedirectToAction("Index", "Home");
                 }
 
-                // Add errors to the model state if the creation failed
                 foreach (var error in creationResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
-            // If we reach this point, something failed, redisplay the form with the current model
             return View(model);
         }
 
@@ -78,7 +70,7 @@ namespace BrightStarPhase2AssessmentTestEventManagement.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
